@@ -1,0 +1,78 @@
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import ListView
+from . forms import EmailPostForm, CommentForm
+from . models import Post, Comment
+from django.core.mail import send_mail
+
+# Create your views here.
+
+
+class PostListView(ListView):
+    queryset = Post.published.all()
+    context_object_name = 'post'
+    paginate_by = 3
+    template_name = 'blog/post/list.html'
+
+
+def post_list(request):
+    object_list = Post.published.all()
+    paginator = Paginator(object_list, 1)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request,
+                  'blog/post/list.html',
+                  {'page': page, 'post': posts})
+
+
+def post_detail(request, year, month, day, post):
+    year = int(year)
+    month = int(month)
+    day = int(day)
+    post = get_object_or_404(Post, slug=post, status='published', publish__year=year,
+                             publish__month=month, publish__day=day)
+    comments = post.comments.filter(active=True)
+    new_comment = None
+    comment_form = CommentForm(request.POST or None)
+    if request.method == 'POST':
+    # Пользователь отправил комментарий.
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+    # Создаем комментарий, но пока не сохраняем в базе данных.
+            new_comment = comment_form.save(commit=False)
+    # Привязываем комментарий к текущей статье.
+            new_comment.post = post
+    # Сохраняем комментарий в базе данных.
+            new_comment.save()
+        else:
+            comment_form = CommentForm()
+    return render(request, 'blog/post/detail.html', {'post': post,
+                                                     'comments': comments,
+                                                     'new_comment': new_comment,
+                                                     'comment_form': comment_form})
+
+
+def post_share(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status='published')
+    form = EmailPostForm(request.POST or None)
+    sent = False
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = '{} ({}) Рекомендую вам прочесть "{}"'.format(cd['name'], cd['email'], post.title)
+            message = 'Читайте "{}" {}\n\n{}\' коментирует:{}'.format(post.title, post_url, cd['name'], cd['comments'])
+            send_mail(subject, message, cd['email'], [cd['to']])
+            sent = True
+        else:
+            form = EmailPostForm()
+    return render(request, 'blog/post/share.html', {'item': post, 'form': form, 'sent': sent})
+
+
+

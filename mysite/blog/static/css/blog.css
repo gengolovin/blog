@@ -1,0 +1,28 @@
+.leftdiv{
+    width: auto;
+    height: auto;
+    margin: 0px 3px 3px 0px;
+	padding: 10px 10px 10px 10px;
+    margin: 10px;
+	float: left;
+    border: solid 1px orange;
+    margin-right: 0px;
+
+}
+.rightdiv{
+    float: left;
+    width: auto;
+    margin: 10px;
+    padding: 10px 10px 10px 10px;
+    background: #eeeee5;
+}
+
+a:link, a:visited {
+  color:#3875d7;
+  text-decoration:unset;
+  cursor:pointer;
+}
+
+a:link:active, a:hover,a:visited:active {
+  color:#ba2121;
+}
