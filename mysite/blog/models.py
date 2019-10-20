@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from taggit.managers import TaggableManager
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -14,6 +15,7 @@ class PublishedManager(models.Manager):
 class Post(models.Model):
     objects = models.Manager()
     published = PublishedManager()
+    tags = TaggableManager()
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('published', 'Published'),
