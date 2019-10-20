@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 class PostListView(ListView):
     queryset = Post.published.all()
     context_object_name = 'post'
-    paginate_by = 3
+    paginate_by = 2
     template_name = 'blog/post/list.html'
 
 
