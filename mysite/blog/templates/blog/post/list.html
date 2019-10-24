@@ -4,14 +4,26 @@
 
 {% block content %}
     <h2>Мой блок</h2>
+    {% if tag %}
+        <h2>Статья с тегом "{{ tag.name }}"</h2>
+    {% endif %}
     {% for item in post %}
         <h3>
             <a href="{{ item.get_absolute_url }}">
                 {{ item.title }}
             </a>
         </h3>
-        <p class="date">Опубликовано {{ item.publish }} Автор: {{ item.author }}</p>
-    {{ item.body|truncatewords:20|linebreaks }}
+        {% if item.tags.all %}
+        <p class="tags">
+            Теги:
+            {% for tag in item.tags.all %}
+                <a href="{% url 'blog:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+         </p>
+        {% endif %}
+        <p>Опубликовано {{ item.publish }} Автор: {{ item.author }}</p>
+        {{ item.body|truncatewords:20|linebreaks }}
     {% endfor %}
-    {% include "pagination.html" with page=page_obj %}
+    {% include "pagination.html" with page=post %}
 {% endblock %}

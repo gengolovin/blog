@@ -1,8 +1,8 @@
 {% extends "blog/base.html" %}
-{% block title %}Share a post{% endblock %}
+{% block title %}Отправка статьи{% endblock %}
 {% block content %}
     {% if sent %}
-        <h1>E-mail удачно отправлен</h1>
+        <h3>E-mail удачно отправлен</h3>
         <p>"{{ item.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
     {% else %}
         <h3>Статья "{{ item.title }}" отправить по  e-mail</h3>
