@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -23,7 +24,7 @@
             Коментарий {{ forloop.counter }} от {{ comment.name }}
             {{ comment.created }}
             </p>
-            {{ comment.body|linebreaks }}
+            {{ comment.body|markdown }}
         </div>
     {% empty %}
         <p>Нет коментарий.</p>
