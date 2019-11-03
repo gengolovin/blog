@@ -1,9 +1,9 @@
 .leftdiv{
-    width: 80%;
+    width: 65%;
     height: auto;
     margin: 0px 3px 3px 0px;
-	padding: 10px 10px 10px 10px;
-    margin: 10px;
+	padding: 5px 5px 5px 5px;
+    margin: 5px;
 	float: left;
     border: solid 1px orange;
     margin-right: 0px;
@@ -11,8 +11,8 @@
 }
 .rightdiv{
     float: left;
-    width: auto;
-    margin: 10px;
+    width: 31%;
+    margin: 5px;
     padding: 10px 10px 10px 10px;
     background: #eeeee5;
 }
@@ -20,6 +20,7 @@
 a:link, a:visited {
   color:#3875d7;
   text-decoration:unset;
+  font-size: 16px;
   cursor:pointer;
 }
 

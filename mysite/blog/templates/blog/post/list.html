@@ -5,7 +5,7 @@
 {% block content %}
     <h2>Мой блок</h2>
     {% if tag %}
-        <h2>Статья с тегом "{{ tag.name }}"</h2>
+        <h3>Статья с тегом "{{ tag.name }}"</h3>
     {% endif %}
     {% for item in post %}
         <h3>
